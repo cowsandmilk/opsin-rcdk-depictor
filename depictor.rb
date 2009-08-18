@@ -1,21 +1,29 @@
 require 'rubygems'
+if ENV['CLASSPATH'].nil? ||  ENV['CLASSPATH'] == ''
+    ENV['CLASSPATH'] = 'opsin-big-0.1.0.jar'
+else
+    ENV['CLASSPATH'] << File::PATH_SEPARATOR 
+    ENV['CLASSPATH'] << 'opsin-big-0.1.0.jar'
+end
 gem 'rcdk'
 require 'rcdk'
-
-Java::Classpath.add('opsin-big-0.1.0.jar')
 
 require 'rcdk/util'
 
 # A simple IUPAC->2-D structure convertor.
+jrequire 'java.io.StringReader'
+jrequire 'uk.ac.cam.ch.wwmm.opsin.NameToStructure'
+jrequire 'org.openscience.cdk.io.CMLReader'
+jrequire 'org.openscience.cdk.ChemFile'
 class Depictor
-  @@StringReader = import 'java.io.StringReader'
-  @@NameToStructure = import 'uk.ac.cam.ch.wwmm.opsin.NameToStructure'
-  @@CMLReader = import 'org.openscience.cdk.io.CMLReader'
-  @@ChemFile = import 'org.openscience.cdk.ChemFile'
+  include Java::Io
+  include Uk::Ac::Cam::Ch::Wwmm::Opsin
+  include Org::Openscience::Cdk::Io
+  include Org::Openscience::Cdk
 
   def initialize
-    @nts = @@NameToStructure.new
-    @cml_reader = @@CMLReader.new
+    @nts = NameToStructure.getInstance
+    @cml_reader = CMLReader.new
   end
 
   # Writes a <tt>width</tt> by <tt>height</tt> PNG to
@@ -38,7 +46,7 @@ class Depictor
 
     @cml_reader.setReader(string_reader)
 
-    chem_file = @cml_reader.read(@@ChemFile.new)
+    chem_file = @cml_reader.read(ChemFile.new)
     molecule = chem_file.getChemSequence(0).getChemModel(0).getSetOfMolecules.getMolecule(0)
 
     molecule = RCDK::Util::XY.coordinate_molecule(molecule)
