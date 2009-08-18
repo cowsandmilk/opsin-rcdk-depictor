@@ -1,10 +1,10 @@
 require 'rubygems'
-require_gem 'rcdk'
+gem 'rcdk'
 require 'rcdk'
 
 Java::Classpath.add('opsin-big-0.1.0.jar')
 
-require 'util'
+require 'rcdk/util'
 
 # A simple IUPAC->2-D structure convertor.
 class Depictor
