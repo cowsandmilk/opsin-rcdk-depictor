@@ -11,7 +11,7 @@ require 'rcdk'
 require 'rcdk/util'
 
 # A simple IUPAC->2-D structure convertor.
-jrequire 'java.io.StringReader'
+jrequire 'java.io.StringBufferInputStream'
 jrequire 'uk.ac.cam.ch.wwmm.opsin.NameToStructure'
 jrequire 'org.openscience.cdk.io.CMLReader'
 jrequire 'org.openscience.cdk.ChemFile'
@@ -42,9 +42,9 @@ class Depictor
   private
 
   def cml_to_molfile(cml)
-    string_reader = StringReader.new(cml.toXML)
+    string_stream = StringBufferInputStream.new(cml.toXML)
 
-    @cml_reader.setReader(string_reader)
+    @cml_reader.setReader(string_stream)
 
     chem_file = @cml_reader.read(ChemFile.new)
     molecule = chem_file.getChemSequence(0).getChemModel(0).getSetOfMolecules.getMolecule(0)
