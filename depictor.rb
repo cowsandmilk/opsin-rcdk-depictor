@@ -47,7 +47,7 @@ class Depictor
     @cml_reader.setReader(string_stream)
 
     chem_file = @cml_reader.read(ChemFile.new)
-    molecule = chem_file.getChemSequence(0).getChemModel(0).getSetOfMolecules.getMolecule(0)
+    molecule = chem_file.getChemSequence(0).getChemModel(0).getMoleculeSet.getMolecule(0)
 
     molecule = RCDK::Util::XY.coordinate_molecule(molecule)
 
