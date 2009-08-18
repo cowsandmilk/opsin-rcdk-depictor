@@ -1,9 +1,9 @@
 require 'rubygems'
 if ENV['CLASSPATH'].nil? ||  ENV['CLASSPATH'] == ''
-    ENV['CLASSPATH'] = 'opsin-big-0.1.0.jar'
+    ENV['CLASSPATH'] = 'Opsin0.5.1.jar'
 else
     ENV['CLASSPATH'] << File::PATH_SEPARATOR 
-    ENV['CLASSPATH'] << 'opsin-big-0.1.0.jar'
+    ENV['CLASSPATH'] << 'OpsinO.5.1.jar'
 end
 gem 'rcdk'
 require 'rcdk'
@@ -48,6 +48,8 @@ class Depictor
 
     chem_file = @cml_reader.read(ChemFile.new)
     molecule = chem_file.getChemSequence(0).getChemModel(0).getMoleculeSet.getMolecule(0)
+
+    molecule = RCDK::Util::Tools.remove_hydrogens(molecule)
 
     molecule = RCDK::Util::XY.coordinate_molecule(molecule)
 
